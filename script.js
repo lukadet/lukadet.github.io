@@ -8,13 +8,53 @@ mobileMenuBtn.addEventListener('click', () => {
         '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
 });
 
-// Skrivanje menija po kliku na povezavo (za mobilne naprave)
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
+// Smooth scroll function
+function smoothScroll(targetId) {
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+        const headerHeight = document.getElementById('header').offsetHeight;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+        
+        // Update URL without refreshing
+        if (history.pushState) {
+            history.pushState(null, null, targetId);
+        } else {
+            window.location.hash = targetId;
+        }
+    }
+}
+
+// Apply smooth scroll to all navigation links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href');
+        if (targetId === '#') return;
+        
+        e.preventDefault();
+        
+        // Close mobile menu if open
         if (navLinks.classList.contains('active')) {
             navLinks.classList.remove('active');
             mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
         }
+        
+        smoothScroll(targetId);
+    });
+});
+
+// Apply smooth scroll to buttons with data-scroll attribute
+document.querySelectorAll('[data-scroll]').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const targetId = button.getAttribute('data-scroll');
+        if (targetId === '#') return;
+        
+        e.preventDefault();
+        smoothScroll(targetId);
     });
 });
 
@@ -49,20 +89,24 @@ animateOnScroll();
 window.addEventListener('scroll', animateOnScroll);
 
 // Obdelava obrazca za kontakt
-const contactForm = document.getElementById('contactForm');
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Hvala za vaše sporočilo! Kmalu vas bomo kontaktirali.');
-    contactForm.reset();
-});
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Hvala za vaše sporočilo! Kmalu vas bomo kontaktirali.');
+        contactForm.reset();
+    });
+}
 
 // Obdelava obrazca za naročanje na novice
 const newsletterForm = document.getElementById('newsletterForm');
-newsletterForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('Hvala za naročilo na naše novice!');
-    newsletterForm.reset();
-});
+if (newsletterForm) {
+    newsletterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Hvala za naročilo na naše novice!');
+        newsletterForm.reset();
+    });
+}
 
 // Animate stats counter
 function animateStats() {
@@ -85,13 +129,24 @@ function animateStats() {
 
 // Trigger animation when section is in view
 const aboutUsSection = document.querySelector('.about-us');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting) {
-            animateStats();
-            observer.unobserve(entry.target);
-        }
-    });
-}, {threshold: 0.5});
+if (aboutUsSection) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                animateStats();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {threshold: 0.5});
 
-observer.observe(aboutUsSection);
+    observer.observe(aboutUsSection);
+}
+
+// Handle initial hash in URL (if someone shares a deep link)
+window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash) {
+        setTimeout(() => {
+            smoothScroll(window.location.hash);
+        }, 100);
+    }
+});

@@ -903,3 +903,178 @@ footer {
         min-width: 100%;
     }
 }
+
+/* About Us Section */
+.about-us {
+    padding: 100px 0;
+    background-color: #f9f9f9;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-us::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/rose-pattern.png') repeat;
+    opacity: 0.03;
+    z-index: 0;
+}
+
+.about-us-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.about-us-text {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+
+}
+
+.about-us-text h3 {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin: 25px 0 15px;
+    font-family: "Bodoni Moda", serif;
+    font-weight: 500;
+}
+
+.about-us-text p {
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.8;
+    text-align: center;
+    
+}
+
+.about-us-image {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.about-us-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.about-us-image:hover img {
+    transform: scale(1.03);
+}
+
+.experience-badge {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: var(--primary-color);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+    transform: rotate(-5deg);
+    transition: all 0.3s ease;
+}
+
+.about-us-image:hover .experience-badge {
+    transform: rotate(0deg) scale(1.05);
+}
+
+.experience-badge span {
+    display: block;
+    font-weight: bold;
+}
+
+.experience-badge span:first-child {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.experience-badge span:last-child {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.about-us-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+    display: block;
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-family: "Bodoni Moda", serif;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-us {
+        padding: 60px 0;
+    }
+    
+    .about-us-text, .about-us-image {
+        flex: none;
+        width: 100%;
+    }
+    
+    .experience-badge {
+        bottom: 20px;
+        right: 20px;
+        padding: 15px;
+    }
+    
+    .experience-badge span:first-child {
+        font-size: 24px;
+    }
+    
+    .stat-item {
+        min-width: 120px;
+        padding: 15px;
+    }
+    
+    .stat-number {
+        font-size: 28px;
+    }
+}

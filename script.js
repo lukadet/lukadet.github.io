@@ -63,3 +63,35 @@ newsletterForm.addEventListener('submit', (e) => {
     alert('Hvala za naročilo na naše novice!');
     newsletterForm.reset();
 });
+
+// Animate stats counter
+function animateStats() {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const speed = 200;
+    
+    statNumbers.forEach(stat => {
+        const target = parseInt(stat.getAttribute('data-count'));
+        const count = parseInt(stat.innerText);
+        const increment = target / speed;
+        
+        if(count < target) {
+            stat.innerText = Math.ceil(count + increment);
+            setTimeout(animateStats, 1);
+        } else {
+            stat.innerText = target;
+        }
+    });
+}
+
+// Trigger animation when section is in view
+const aboutUsSection = document.querySelector('.about-us');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            animateStats();
+            observer.unobserve(entry.target);
+        }
+    });
+}, {threshold: 0.5});
+
+observer.observe(aboutUsSection);

@@ -298,3 +298,59 @@ footer{background:var(--dark-gray);color:#fff;padding:60px 0 20px;text-align:cen
     transform: translateX(-50%) !important;
   }
 }
+/* ==== FINAL CENTER (no transforms) + iOS nudge ==== */
+
+/* default: no nudge */
+:root { --cta-nudge: 0px; }
+
+@media (max-width: 768px) {
+  /* Make the card a full-width centering rail */
+  .contact-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* The inner block becomes a pure centering container */
+  .contact .contact-form {
+    width: 100% !important;
+    max-width: 560px !important;
+    margin: 0 auto 12px auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    /* remove hover lifts on touch so nothing “nudges” */
+    transform: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* BUTTON: block + auto margins = exact center (no translateX) */
+  .contact .submit-btn {
+    display: block !important;
+    width: clamp(220px, 80vw, 360px) !important;
+    max-width: calc(100% - 40px) !important; /* 20px side padding safety */
+    margin-inline: auto !important;          /* horizontal centering */
+    margin-block: 18px !important;
+    position: static !important;
+    left: auto !important;
+    transform: none !important;
+    text-align: center !important;
+  }
+
+  /* kill hover translation on touch */
+  .contact .submit-btn:hover { transform: none !important; }
+}
+
+/* iOS Safari sometimes renders 0.5px off. This lets us nudge if needed. */
+/* Increase/decrease --cta-nudge (e.g., 2px or -2px) until it looks perfect */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    .contact .submit-btn {
+      margin-left: calc(var(--cta-nudge)) !important;
+      margin-right: calc(var(--cta-nudge) * -1) !important;
+    }
+  }
+}

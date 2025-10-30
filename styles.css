@@ -166,3 +166,35 @@ footer{background:var(--dark-gray);color:#fff;padding:60px 0 20px;text-align:cen
 }
 
 @media (max-width:768px){.reels-gallery{padding:60px 0}.reel-viewport{--reel-height:380px}}
+/* ==== Hard-center 'Naročite se' kartice in gumba na mobilnih ==== */
+@media (max-width: 768px) {
+  /* Poravnaj celotno kontaktno kartico v containerju */
+  .contact-container {
+    justify-content: center;
+  }
+
+  /* Kartica z gumbom: naj se poravna na sredino in dobi simetrične robove */
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* centriraj vse notranje vsebine */
+  }
+
+  /* Notranja "gumb" kartica naj bo res sredinsko in omejena po širini */
+  .contact-form {
+    width: 100%;
+    max-width: 560px;        /* varnostna omejitev širine kartice */
+    padding: 0;              /* že imamo padding v staršem, tu ga na mobilu ne rabimo */
+    margin: 0 auto 8px auto; /* hard center */
+    display: grid;
+    place-items: center;     /* gumb natančno na sredini */
+  }
+
+  /* Gumb: vedno simetričen in brez raztegovanja čez kartico */
+  .contact .submit-btn {
+    width: min(92%, 320px);  /* ne čez robove; lepo centrirano */
+    margin: 16px auto;       /* horizontalni center */
+    display: block;
+    text-align: center;
+  }
+}

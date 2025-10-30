@@ -2,14 +2,14 @@
    Blue Rose – JavaScript
    ============================================================ */
 
-// ===== 1. Dinamičen header (shadow po scrollu) =====
+// ===== 1) Dinamičen header (shadow po scrollu) =====
 window.addEventListener("scroll", function () {
   const header = document.getElementById("header");
   if (window.scrollY > 50) header.classList.add("header-scrolled");
   else header.classList.remove("header-scrolled");
 });
 
-// ===== 2. Mobilni meni toggle =====
+// ===== 2) Mobilni meni toggle =====
 const mobileMenuBtn = document.getElementById("mobileMenuBtn");
 const navLinks = document.getElementById("navLinks");
 
@@ -25,11 +25,8 @@ if (mobileMenuBtn && navLinks) {
   });
 }
 
-// ===== 3. Animacija elementov ob prikazu (scroll reveal) =====
-const observerOptions = {
-  threshold: 0.2
-};
-
+// ===== 3) Animacija elementov ob prikazu (scroll reveal) =====
+const observerOptions = { threshold: 0.2 };
 const revealOnScroll = new IntersectionObserver((entries, obs) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -43,7 +40,7 @@ document.querySelectorAll(".service-card, .team-member").forEach(el => {
   revealOnScroll.observe(el);
 });
 
-// ===== 4. Smooth scroll (lep prehod pri klikih na meni) =====
+// ===== 4) Smooth scroll za sidrne povezave =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener("click", function (e) {
     const targetId = this.getAttribute("href");
@@ -60,7 +57,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ===== 5. Kontaktni gumb – skrol do kontaktne sekcije =====
+// ===== 5) Kontaktni gumb – skrol do kontakt sekcije =====
 const contactButton = document.querySelector('.submit-btn');
 if (contactButton) {
   contactButton.addEventListener('click', () => {
@@ -74,68 +71,107 @@ if (contactButton) {
   });
 }
 
-// ===== 6. GALERIJA (CSS Marquee – gladka in lahka) =====
+/* ============================================================
+   6) Galerija – Hybrid CSS-marquee + Drag (brez skokov na hover)
+   ============================================================ */
 (function () {
-  function initCSSMarquee() {
+  function initReelHybrid() {
     const viewport = document.querySelector('.reel-viewport');
     const track = document.getElementById('reelTrack');
     if (!viewport || !track) return;
 
-    // --- 1) Vzemi vse obstoječe elemente ---
+    // ---- Zgradi 2 identični skupini za brezšiven loop ----
     const items = Array.from(track.children);
     const group1 = document.createElement('div');
     group1.className = 'reel-group';
     items.forEach(el => group1.appendChild(el));
     track.appendChild(group1);
-
-    // --- 2) Kloniraj 1x za neprekinjen loop ---
     const group2 = group1.cloneNode(true);
     track.appendChild(group2);
 
-    // --- 3) Poskrbi za inline-flex razporeditev ---
-    Object.assign(track.style, { display: 'inline-flex' });
-    Object.assign(group1.style, { display: 'inline-flex', gap: 'var(--gap)' });
-    Object.assign(group2.style, { display: 'inline-flex', gap: 'var(--gap)' });
-
-    // --- 4) Nastavi hitrosti iz data atributov ---
-const dur  = parseFloat(viewport.dataset.duration || '28');
-const hoverSpeed = parseFloat(viewport.dataset.hoverSpeed || '1.0'); // faktor
-const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-const d = clamp(dur, 6, 120);
-const hf = clamp(hoverSpeed, 0.1, 1); // faktor za hover, npr. 0.5 = 2× hitreje
-track.style.setProperty('--duration', d);
-track.style.setProperty('--hover-factor', hf);
-
-    // --- 5) Upoštevaj vidnost zavihka ---
-    document.addEventListener('visibilitychange', () => {
-      track.style.animationPlayState = document.hidden ? 'paused' : 'running';
+    // ---- Inline-flex layout + razmiki ----
+    [track, group1, group2].forEach(el => {
+      el.style.display = 'inline-flex';
+      el.style.gap = 'var(--gap)';
     });
 
-    // --- 6) Če uporabnik ima “reduce motion”, izklopi animacijo ---
+    // ---- Hitrost iz data-* (duration v sekundah, hover-speed kot faktor) ----
+    const dur = parseFloat(viewport.dataset.duration || '28');          // npr. 28
+    const hoverFactor = parseFloat(viewport.dataset.hoverSpeed || '0.5'); // 0.5 = 2× hitreje
+    track.style.setProperty('--duration', dur);
+    track.style.setProperty('--hover-factor', hoverFactor);
+
+    // ---- Hover ne resetira faze (to ureja CSS z var-ji) ----
+    // (nič posebnega v JS – samo poskrbimo za play/pause spodaj)
+
+    // ---- Pause/Resume helperji za animacijo ----
+    const pauseAnim  = () => (track.style.animationPlayState = 'paused');
+    const resumeAnim = () => (track.style.animationPlayState = 'running');
+
+    // ---- Drag podpora (klik/drag začasno ustavi CSS animacijo) ----
+    let isDown = false, startX = 0, startOffset = 0;
+
+    const getMatrixX = () => {
+      const m = getComputedStyle(track).transform;
+      if (m === 'none') return 0;
+      const val = parseFloat(m.split(',')[4]);
+      return isNaN(val) ? 0 : val;
+    };
+
+    viewport.addEventListener('pointerdown', (e) => {
+      isDown = true;
+      startX = e.clientX;
+      startOffset = getMatrixX();
+      pauseAnim();
+      viewport.setPointerCapture?.(e.pointerId);
+    });
+
+    viewport.addEventListener('pointermove', (e) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      track.style.transform = `translate3d(${startOffset + dx}px,0,0)`;
+    });
+
+    // Robustno sproščanje: počisti inline transform in ponovno zaženi CSS animacijo
+    function release() {
+      if (!isDown) return;
+      isDown = false;
+      track.style.removeProperty('transform'); // da CSS animation spet prevzame
+      void track.offsetHeight;                 // reflow: zanesljivo ponovno veže animacijo
+      resumeAnim();
+    }
+
+    viewport.addEventListener('pointerup', release);
+    viewport.addEventListener('pointercancel', release);
+
+    // Extra: če hitro klikneš ali zapustiš z dragom
+    viewport.addEventListener('click', () => {
+      track.style.removeProperty('transform');
+      void track.offsetHeight;
+      resumeAnim();
+    });
+    viewport.addEventListener('pointerleave', () => {
+      if (!isDown) return;
+      isDown = false;
+      track.style.removeProperty('transform');
+      void track.offsetHeight;
+      resumeAnim();
+    });
+
+    // ---- Varčevanje baterije: pavza, ko je tab skrit ----
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? pauseAnim() : resumeAnim();
+    });
+
+    // ---- Spoštuj "reduced motion" ----
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       track.style.animation = 'none';
     }
-
-    // --- 7) Tap/pause na dotik (uporabno na mobilnih) ---
-    let touchPauseTimer = null;
-    viewport.addEventListener('touchstart', () => {
-      track.style.animationPlayState = 'paused';
-      clearTimeout(touchPauseTimer);
-      touchPauseTimer = setTimeout(() => {
-        track.style.animationPlayState = 'running';
-      }, 4000);
-    }, { passive: true });
-
-    viewport.addEventListener('touchend', () => {
-      clearTimeout(touchPauseTimer);
-      track.style.animationPlayState = 'running';
-    });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCSSMarquee);
+    document.addEventListener('DOMContentLoaded', initReelHybrid);
   } else {
-    initCSSMarquee();
+    initReelHybrid();
   }
 })();
-

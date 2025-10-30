@@ -198,3 +198,31 @@ footer{background:var(--dark-gray);color:#fff;padding:60px 0 20px;text-align:cen
     text-align: center;
   }
 }
+
+/* ==== HARD-CENTER fix for the CTA card on mobile ==== */
+@media (max-width: 768px) {
+  /* parent stays normal */
+  .contact-info { position: relative; }
+
+  /* absolutely center the inner white card */
+  .contact-form {
+    position: relative;      /* keep it in flow */
+    left: 50%;               /* move to middle */
+    transform: translateX(-50%);   /* pull back by half width */
+    width: min(560px, calc(100% - 2rem)); /* never touch edges */
+    margin: 0 auto 12px auto;        /* visual balance */
+    padding: 0;                       /* no extra padding on mobile */
+    box-shadow: 0 12px 30px rgba(0,0,0,.08); /* softer, symmetrical */
+  }
+
+  /* prevent hover-lift from shifting layout on touch devices */
+  .contact-form:hover { transform: translateX(-50%); }
+
+  /* the button itself — perfectly centered */
+  .contact .submit-btn {
+    display: block;
+    width: min(92%, 320px);
+    margin: 18px auto;
+    text-align: center;
+  }
+}

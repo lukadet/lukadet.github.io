@@ -226,3 +226,53 @@ footer{background:var(--dark-gray);color:#fff;padding:60px 0 20px;text-align:cen
     text-align: center;
   }
 }
+/* ==== FINAL MOBILE CENTER FIX (hard overrides) ==== */
+@media (max-width: 768px) {
+  /* make the outer card symmetric and predictable */
+  .contact-info {
+    padding: 32px 20px !important;          /* same L/R padding */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;          /* center children */
+  }
+
+  /* inner “white card” that holds the button */
+  .contact .contact-form {
+    width: 100% !important;
+    max-width: 560px !important;
+    margin: 0 auto 12px auto !important;     /* hard center */
+    padding: 0 !important;
+
+    /* remove the floating-card look on phones to avoid optical shift */
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    left: auto !important;
+    transform: none !important;
+  }
+
+  /* the CTA button itself */
+  .contact .submit-btn {
+    display: block !important;
+    width: min(92%, 320px) !important;
+    margin: 18px auto !important;
+    text-align: center !important;
+  }
+
+  /* stop hover “lift” on touch devices that can visually offset things */
+  .contact-info:hover,
+  .contact-form:hover {
+    transform: none !important;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.05) !important;
+  }
+}
+
+/* on devices without real hover, disable all hover-lift shifts */
+@media (hover: none) {
+  .submit-btn:hover { transform: none !important; }
+}

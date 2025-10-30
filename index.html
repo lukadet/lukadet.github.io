@@ -148,30 +148,36 @@
         </div>
     </section>
 
-    <!-- Galerija (Reels) – podpira poljubne formate -->
+   <!-- Galerija (Reels) – optimizirano za mobilne -->
 <section class="reels-gallery" id="gallery">
   <div class="container">
     <div class="section-title">
       <h2>Galerija</h2>
-    
     </div>
 
     <!-- data-speed / data-hover-speed uravnavata hitrost; data-fit="contain" ohrani cele slike -->
-    <div class="reel-viewport" data-speed="0.7" data-hover-speed="1.5" data-fit="contain" style="--reel-height: 460px;">
+    <div class="reel-viewport"
+         data-speed="0.32"
+         data-hover-speed="0.75"
+         data-fit="contain"
+         style="--reel-height: 460px;">
       <ul class="reel-track" id="reelTrack">
-        <!-- VSTAVI SVOJE SLIKE (lahko 1:1, 4:3, 3:2, 16:9, panorama …) -->
-        <li class="reel-frame"><img src="images/1.jpeg" alt="Galerija 1" loading="lazy"></li>
-        <li class="reel-frame"><img src="images/2.jpeg" alt="Galerija 2" loading="lazy"></li>
-        <li class="reel-frame"><img src="images/3.jpeg" alt="Galerija 3" loading="lazy"></li>
-        <li class="reel-frame"><img src="images/4.jpeg" alt="Galerija 4" loading="lazy"></li>
-        <li class="reel-frame"><img src="images/5.jpeg" alt="Galerija 5" loading="lazy"></li>
-        <li class="reel-frame"><img src="images/6.jpeg" alt="Galerija 6" loading="lazy"></li>
+        <!-- Dodaj svoje slike (lahko 1:1, 4:3, 3:2, 16:9, panorama) -->
+        <li class="reel-frame"><img src="images/1.jpeg" alt="Galerija 1" loading="lazy" width="1280" height="853"></li>
+        <li class="reel-frame"><img src="images/2.jpeg" alt="Galerija 2" loading="lazy" width="1280" height="853"></li>
+        <li class="reel-frame"><img src="images/3.jpeg" alt="Galerija 3" loading="lazy" width="1280" height="853"></li>
+        <li class="reel-frame"><img src="images/4.jpeg" alt="Galerija 4" loading="lazy" width="1280" height="853"></li>
+        <li class="reel-frame"><img src="images/5.jpeg" alt="Galerija 5" loading="lazy" width="1280" height="853"></li>
+        <li class="reel-frame"><img src="images/6.jpeg" alt="Galerija 6" loading="lazy" width="1280" height="853"></li>
       </ul>
       <div class="reel-fade left"></div>
       <div class="reel-fade right"></div>
     </div>
   </div>
 </section>
+
+<!-- Pomembno: cache-busting + defer -->
+<script src="script.js?v=3" defer></script>
 
     <!-- Ekipa -->
     <section class="team" id="team">

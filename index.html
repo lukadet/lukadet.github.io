@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Blue Rose - Lepotni salon</title>
-  <meta name="description" content="Blue Rose lepotni salon v Ljubljani. Manikira, pedikura, depilacija, maderoterapija in še več.">
 
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Readex+Pro:wght@160..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css?v=20" />
 </head>
 <body>
   <!-- Header -->
@@ -39,10 +39,10 @@
   </header>
 
   <!-- Hero -->
-  <section class="hero" id="home" aria-label="Dobrodošli">
+  <section class="hero" id="home">
     <div class="hero-content">
       <h2>Dobrodošli v Blue Rose</h2>
-      <p>Prepustite se razvajanju, ki presega pričakovanja. Od konic prstov do popolne sprostitve, vaša pot do dobrega počutja se začne tukaj.</p>
+      <p>Prepustite se razvajanju, ki presega pričakovanja. Vaša pot do dobrega počutja se začne tukaj.</p>
       <div class="hero-buttons">
         <a href="#services" class="btn">Naše storitve</a>
         <a href="#contact" class="btn btn-outline">Naročite se</a>
@@ -51,17 +51,17 @@
   </section>
 
   <!-- O nas -->
-  <section class="about" id="about" aria-labelledby="about-title">
+  <section class="about" id="about">
     <div class="container">
       <div class="about-content">
         <div class="about-image">
           <img src="images/rose.png" alt="Salon Blue Rose" loading="lazy" decoding="async">
         </div>
         <div class="about-text">
-          <h2 id="about-title">O našem salonu</h2>
-          <p>Kozmetični salon <b>BlueRose</b> je svoja vrata prvič odprl 16. avgusta 2023 in od takrat z veseljem ustvarjamo prostor, kjer se lepota, storitev in dobro počutje srečajo.</p>
-          <p>Nahajamo se v <b>Ljubljani na Strelišču</b>. Naše poslanstvo je, da vsak obisk postane prijetna izkušnja, ki preseže pričakovanja.</p>
-          <p>Ponujamo širok nabor <b>kozmetičnih storitev</b>, ki jih izvajamo natančno in predano. Dobrodošli v svetu BlueRose, kjer lepota zacveti.</p>
+          <h2>O našem salonu</h2>
+          <p>Kozmetični salon <b>BlueRose</b> ustvarja prostor, kjer se lepota, storitev in dobro počutje srečajo.</p>
+          <p>Nahajamo se v <b>Ljubljani na Strelišču</b>. Naše poslanstvo je, da vsak obisk postane prijetna izkušnja.</p>
+          <p>Ponujamo širok nabor <b>kozmetičnih storitev</b> z natančnostjo in predanostjo.</p>
           <br>
           <a href="#team" class="btn">Spoznajte našo ekipo</a>
         </div>
@@ -70,10 +70,10 @@
   </section>
 
   <!-- Storitve -->
-  <section class="services" id="services" aria-labelledby="services-title">
+  <section class="services" id="services">
     <div class="container">
       <div class="section-title">
-        <h2 id="services-title">Naše Storitve</h2>
+        <h2>Naše Storitve</h2>
         <p>Ponujamo širok spekter lepotnih storitev, prilagojen vašim željam.</p>
       </div>
       <div class="services-grid">
@@ -101,7 +101,7 @@
             <h4>MEDICINSKA PEDIKURA</h4>
             <p>Kurja očesa, otiščanci, razpoke, vraščeni nohti. Primerno tudi za diabetike.</p><br>
             <h4>PEDI GEL</h4>
-            <p>Nega stopal z ureditvijo nohtov, odstranitvijo obnohtne kožice in novo plastjo permanentnega laka.</p>
+            <p>Nega stopal, pri kateri se uredijo in skrajšajo nohti, nežno odstrani obnohtna kožica ter osveži videz z novo plastjo permanentnega laka.</p>
           </div>
         </article>
 
@@ -125,7 +125,7 @@
           <div class="service-icon"><i class="fas fa-eye" aria-hidden="true"></i></div>
           <h3>Oblikovanje obrvi</h3>
           <div class="service-details">
-            <p>Pinceta ali vosek ter barvanje; prilagojeno vašemu tenu in barvi las.</p>
+            <p>Pinceta ali vosek ter barvanje; prilagojeno tenu kože in barvi las.</p>
           </div>
         </article>
 
@@ -134,32 +134,29 @@
           <div class="service-icon"><i class="fas fa-heart" aria-hidden="true"></i></div>
           <h3>Maderoterapija</h3>
           <div class="service-details">
-            <p>Leseni valjčki za: zmanjšanje celulita, boljši tonus, limfna podpora in razstrupljanje.</p>
+            <p>Leseni valjčki: zmanjšanje celulita, boljši tonus, limfna podpora, razstrupljanje.</p>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- Galerija (Reels) – hybrid CSS marquee -->
-  <section class="reels-gallery" id="gallery" aria-labelledby="gallery-title">
+  <!-- Galerija -->
+  <section class="reels-gallery" id="gallery">
     <div class="container">
       <div class="section-title">
-        <h2 id="gallery-title">Galerija</h2>
+        <h2>Galerija</h2>
       </div>
 
-      <div class="reel-viewport"
-           data-fit="contain"
-           data-duration="28"
-           data-hover-speed="0.5"
-           style="--reel-height: 460px;">
+      <div class="reel-viewport" data-fit="contain" style="--reel-height: 460px;">
         <ul class="reel-track" id="reelTrack" aria-label="Drseča galerija">
-          <li class="reel-frame"><img src="images/1.jpeg" alt="Galerija 1" loading="lazy" decoding="async" width="1280" height="853"></li>
-          <li class="reel-frame"><img src="images/2.jpeg" alt="Galerija 2" loading="lazy" decoding="async" width="1280" height="853"></li>
-          <li class="reel-frame"><img src="images/3.jpeg" alt="Galerija 3" loading="lazy" decoding="async" width="1280" height="853"></li>
-          <li class="reel-frame"><img src="images/4.jpeg" alt="Galerija 4" loading="lazy" decoding="async" width="1280" height="853"></li>
-          <li class="reel-frame"><img src="images/5.jpeg" alt="Galerija 5" loading="lazy" decoding="async" width="1280" height="853"></li>
-          <li class="reel-frame"><img src="images/6.jpeg" alt="Galerija 6" loading="lazy" decoding="async" width="1280" height="853"></li>
+          <!-- poljuben format: 1:1, 4:3, 3:2, 16:9, panorama … -->
+          <li class="reel-frame"><img src="images/1.jpeg" alt="Galerija 1" loading="eager" decoding="async"></li>
+          <li class="reel-frame"><img src="images/2.jpeg" alt="Galerija 2" loading="lazy" decoding="async"></li>
+          <li class="reel-frame"><img src="images/3.jpeg" alt="Galerija 3" loading="lazy" decoding="async"></li>
+          <li class="reel-frame"><img src="images/4.jpeg" alt="Galerija 4" loading="lazy" decoding="async"></li>
+          <li class="reel-frame"><img src="images/5.jpeg" alt="Galerija 5" loading="lazy" decoding="async"></li>
+          <li class="reel-frame"><img src="images/6.jpeg" alt="Galerija 6" loading="lazy" decoding="async"></li>
         </ul>
         <div class="reel-fade left" aria-hidden="true"></div>
         <div class="reel-fade right" aria-hidden="true"></div>
@@ -168,19 +165,19 @@
   </section>
 
   <!-- Ekipa -->
-  <section class="team" id="team" aria-labelledby="team-title">
+  <section class="team" id="team">
     <div class="container">
       <div class="section-title">
-        <h2 id="team-title">Naša Ekipa</h2>
-        <p>Srečajte naše strokovnjake.</p>
+        <h2>Naša Ekipa</h2>
+        <p>Srečajte naše izkušene strokovnjake.</p>
       </div>
       <div class="team-grid">
         <div class="team-member">
-          <div class="member-image"><img src="images/Marusa.jpg" alt="Maruša Lazić" loading="lazy" decoding="async"></div>
+          <div class="member-image"><img src="images/marusa.jpg" alt="Maruša Lazić" loading="lazy" decoding="async"></div>
           <div class="member-info"><h3>Maruša Lazić</h3></div>
         </div>
         <div class="team-member">
-          <div class="member-image"><img src="images/Sanja.jpg" alt="Sanja Kovačič" loading="lazy" decoding="async"></div>
+          <div class="member-image"><img src="images/sanja.jpg" alt="Sanja Kovačič" loading="lazy" decoding="async"></div>
           <div class="member-info"><h3>Sanja Kovačič</h3></div>
         </div>
       </div>
@@ -188,12 +185,13 @@
   </section>
 
   <!-- Kontakt -->
-  <section class="contact" id="contact" aria-labelledby="contact-title">
+  <section class="contact" id="contact">
     <div class="container">
       <div class="section-title">
-        <h2 id="contact-title">Naročanje</h2>
+        <h2>Naročanje</h2>
         <p>Za vprašanja ali naročila nas kontaktirajte preko spodaj navedenega.</p>
       </div>
+
       <div class="contact-container">
         <div class="contact-info">
           <div class="contact-form">
@@ -201,15 +199,15 @@
           </div>
           <br>
           <h3>Kontaktni podatki</h3>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></div><div class="info-text"><h4>Lokacija</h4><p>Dolenjska cesta 11, 1000 Ljubljana</p></div></div>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-phone-alt" aria-hidden="true"></i></div><div class="info-text"><h4>Telefon</h4><p><a href="tel:+38640140697">+386 40 140 697</a></p></div></div>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-envelope" aria-hidden="true"></i></div><div class="info-text"><h4>Email</h4><p><a href="mailto:BlueRoseM15@gmail.com">BlueRoseM15@gmail.com</a></p></div></div>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-clock" aria-hidden="true"></i></div><div class="info-text"><h4>Delovni čas</h4><p>Po dogovoru</p></div></div>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-map-marker-alt"></i></div><div class="info-text"><h4>Lokacija</h4><p>Dolenjska cesta 11, 1000 Ljubljana</p></div></div>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-phone-alt"></i></div><div class="info-text"><h4>Telefon</h4><p><a href="tel:+38640140697">+386 40 140 697</a></p></div></div>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-envelope"></i></div><div class="info-text"><h4>Email</h4><p><a href="mailto:BlueRoseM15@gmail.com">BlueRoseM15@gmail.com</a></p></div></div>
+          <div class="info-item"><div class="info-icon"><i class="fas fa-clock"></i></div><div class="info-text"><h4>Delovni čas</h4><p>Po dogovoru</p></div></div>
 
           <div class="contact-social" aria-label="Družbena omrežja">
-            <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
-            <a href="https://www.instagram.com/marusalazic?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i class="fab fa-instagram" aria-hidden="true"></i><span class="sr-only">Instagram</span></a>
-            <a href="https://www.tiktok.com/@bluerose.salon?_t=ZN-90n1ltSSlGx&_r=1"><i class="fab fa-tiktok" aria-hidden="true"></i><span class="sr-only">TikTok</span></a>
+            <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+            <a href="https://www.instagram.com/marusalazic?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+            <a href="https://www.tiktok.com/@bluerose.salon?_t=ZN-90n1ltSSlGx&_r=1" target="_blank" rel="noopener"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
           </div>
         </div>
       </div>
@@ -225,8 +223,8 @@
           <p>Vaš premierni lepotni salon, kjer se združujejo naravna lepota in sodobne tehnike.</p>
           <div class="footer-social" aria-label="Družbena omrežja">
             <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-            <a href="https://www.instagram.com/marusalazic?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i class="fab fa-instagram" aria-hidden="true"></i></a>
-            <a href="https://www.tiktok.com/@bluerose.salon?_t=ZN-90n1ltSSlGx&_r=1"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+            <a href="https://www.instagram.com/marusalazic?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+            <a href="https://www.tiktok.com/@bluerose.salon?_t=ZN-90n1ltSSlGx&_r=1" target="_blank" rel="noopener"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
           </div>
         </div>
       </div>
@@ -237,6 +235,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=5" defer></script>
+  <!-- Scripts -->
+  <script src="script.js?v=20" defer></script>
 </body>
 </html>

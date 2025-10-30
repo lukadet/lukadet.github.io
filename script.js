@@ -2,14 +2,14 @@
    Blue Rose – JavaScript
    ============================================================ */
 
-// 1) Header shadow on scroll
+// Header shadow on scroll
 window.addEventListener("scroll", () => {
   const header = document.getElementById("header");
   if (window.scrollY > 50) header.classList.add("header-scrolled");
   else header.classList.remove("header-scrolled");
-});
+}, { passive: true });
 
-// 2) Mobile menu
+// Mobile menu
 const mobileMenuBtn = document.getElementById("mobileMenuBtn");
 const navLinks = document.getElementById("navLinks");
 if (mobileMenuBtn && navLinks) {
@@ -19,13 +19,15 @@ if (mobileMenuBtn && navLinks) {
   );
 }
 
-// 3) Reveal on scroll
+// Reveal on scroll
 const revealOnScroll = new IntersectionObserver((entries, obs) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("animate"); obs.unobserve(e.target); }});
+  for (const e of entries) {
+    if (e.isIntersecting) { e.target.classList.add("animate"); obs.unobserve(e.target); }
+  }
 }, { threshold: 0.2 });
 document.querySelectorAll(".service-card, .team-member").forEach(el => revealOnScroll.observe(el));
 
-// 4) Smooth anchor scroll
+// Smooth anchor scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener("click", e => {
     const id = a.getAttribute("href");
@@ -37,7 +39,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// 5) CTA button scroll
+// CTA button scroll
 const contactButton = document.querySelector(".submit-btn");
 if (contactButton) {
   contactButton.addEventListener("click", () => {
@@ -47,17 +49,15 @@ if (contactButton) {
 }
 
 /* ============================================================
-   6) Reel – CSS marquee + desktop drag, mobile-safe (no pause on touch)
+   Reel – CSS marquee + desktop drag, mobile-safe
    ============================================================ */
 (function () {
-  function initReelHybrid() {
+  function initReel() {
     const viewport = document.querySelector(".reel-viewport");
     const track = document.getElementById("reelTrack");
-    if (!viewport || !track) return;
+    if (!viewport || !track || track.dataset.inited === "1") return;
 
-    if (track.dataset.inited === "1") return;
-
-    // Build two identical groups (seamless loop)
+    // Build two identical groups for seamless loop
     let group1 = track.querySelector(".reel-group");
     let group2;
     if (!group1) {
@@ -71,12 +71,9 @@ if (contactButton) {
       ? group1.nextElementSibling
       : track.appendChild(group1.cloneNode(true));
 
-    [track, group1, group2].forEach(el => {
-      el.style.display = "inline-flex";
-      el.style.gap = "var(--gap)";
-    });
+    [track, group1, group2].forEach(el => { el.style.display = "inline-flex"; el.style.gap = "var(--gap)"; });
 
-    // Speed vars
+    // Speed vars (seconds + hover factor)
     const dur = parseFloat(viewport.dataset.duration || "28");
     const hoverFactor = parseFloat(viewport.dataset.hoverSpeed || "0.5");
     track.style.setProperty("--duration", isFinite(dur) ? dur : 28);
@@ -85,10 +82,10 @@ if (contactButton) {
     const pauseAnim  = () => (track.style.animationPlayState = "paused");
     const resumeAnim = () => (track.style.animationPlayState = "running");
 
-    const isFinePointer = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
-    const isCoarse      = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    const isFinePointer = window.matchMedia?.("(pointer: fine)")?.matches;
+    const isCoarse      = window.matchMedia?.("(pointer: coarse)")?.matches;
 
-    // --- Desktop drag (fine pointer only) ---
+    // Desktop drag (fine pointer only)
     if (isFinePointer) {
       let isDown = false, startX = 0, startOffset = 0, dragged = false;
       const getMatrixX = () => {
@@ -99,10 +96,8 @@ if (contactButton) {
       };
       viewport.addEventListener("pointerdown", e => {
         isDown = true; dragged = false;
-        startX = e.clientX;
-        startOffset = getMatrixX();
-        pauseAnim();
-        viewport.setPointerCapture?.(e.pointerId);
+        startX = e.clientX; startOffset = getMatrixX();
+        pauseAnim(); viewport.setPointerCapture?.(e.pointerId);
       });
       viewport.addEventListener("pointermove", e => {
         if (!isDown) return;
@@ -114,7 +109,7 @@ if (contactButton) {
         if (!isDown) return;
         isDown = false;
         track.style.removeProperty("transform");
-        void track.offsetHeight; // reflow to rebind animation
+        void track.offsetHeight; // reflow
         resumeAnim();
       }
       viewport.addEventListener("pointerup", release);
@@ -123,20 +118,20 @@ if (contactButton) {
       viewport.addEventListener("click", e => {
         if (dragged) { e.preventDefault(); e.stopPropagation(); }
         track.style.removeProperty("transform");
-        void track.offsetHeight;
-        resumeAnim();
+        void track.offsetHeight; resumeAnim();
       });
     }
 
-    // --- Mobile/touch safety: never pause on touch-hold ---
+    // Mobile/touch safety – keep running on any touch
     if (isCoarse) {
-      const ensureRun = () => {
-        track.style.removeProperty("transform");
+      const keepRunning = () => {
+        track.style.removeProperty("transform"); // ensure no inline override
         track.style.animationPlayState = "running";
       };
-      viewport.addEventListener("touchstart", ensureRun, { passive: true });
-      viewport.addEventListener("touchend",   ensureRun, { passive: true });
-      viewport.addEventListener("touchcancel",ensureRun, { passive: true });
+      viewport.addEventListener("touchstart", keepRunning, { passive: true });
+      viewport.addEventListener("touchmove",  keepRunning, { passive: true });
+      viewport.addEventListener("touchend",   keepRunning, { passive: true });
+      viewport.addEventListener("touchcancel",keepRunning, { passive: true });
     }
 
     // Battery save: pause when tab hidden
@@ -152,9 +147,6 @@ if (contactButton) {
     track.dataset.inited = "1";
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initReelHybrid);
-  } else {
-    initReelHybrid();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initReel);
+  else initReel();
 })();

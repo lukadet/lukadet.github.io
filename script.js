@@ -5,11 +5,10 @@
 // Header shadow on scroll
 window.addEventListener("scroll", () => {
   const header = document.getElementById("header");
-  if (window.scrollY > 50) header.classList.add("header-scrolled");
-  else header.classList.remove("header-scrolled");
+  header.classList.toggle("header-scrolled", window.scrollY > 50);
 }, { passive: true });
 
-// Mobile menu
+// Mobile menu toggle
 const mobileMenuBtn = document.getElementById("mobileMenuBtn");
 const navLinks = document.getElementById("navLinks");
 if (mobileMenuBtn && navLinks) {
@@ -21,9 +20,12 @@ if (mobileMenuBtn && navLinks) {
 
 // Reveal on scroll
 const revealOnScroll = new IntersectionObserver((entries, obs) => {
-  for (const e of entries) {
-    if (e.isIntersecting) { e.target.classList.add("animate"); obs.unobserve(e.target); }
-  }
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("animate");
+      obs.unobserve(e.target);
+    }
+  });
 }, { threshold: 0.2 });
 document.querySelectorAll(".service-card, .team-member").forEach(el => revealOnScroll.observe(el));
 
@@ -39,7 +41,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-// CTA button scroll
+// CTA scroll
 const contactButton = document.querySelector(".submit-btn");
 if (contactButton) {
   contactButton.addEventListener("click", () => {
@@ -48,14 +50,13 @@ if (contactButton) {
   });
 }
 
-// ===== Smooth Reel Gallery (no hover/drag) — with anti-jump sizing =====
+// Smooth Reel Gallery (no hover/drag, no jump)
 (function () {
   async function decodeImg(img) {
-    try {
-      if (img.decode) { await img.decode(); return; }
-    } catch (_) { /* Safari can throw on decode() if not ready; fall through */ }
+    try { if (img.decode) await img.decode(); }
+    catch { }
     if (img.complete) return;
-    await new Promise(res => img.addEventListener('load', res, { once: true }));
+    await new Promise(res => img.addEventListener("load", res, { once: true }));
   }
 
   async function initReel() {
@@ -64,23 +65,18 @@ if (contactButton) {
     if (!viewport || !track || track.dataset.inited === "1") return;
 
     const H = parseFloat(getComputedStyle(viewport).getPropertyValue("--reel-height")) || 460;
-
-    // 1) Wait for all images to be ready (prevents layout shift on server)
     const imgs = Array.from(track.querySelectorAll("img"));
     await Promise.all(imgs.map(decodeImg));
 
-    // 2) Freeze each frame width from its natural aspect ratio
-    //    width = height * (naturalWidth / naturalHeight)
     Array.from(track.children).forEach(frame => {
       const img = frame.querySelector("img");
-      if (!img || !img.naturalWidth || !img.naturalHeight) return;
-      const w = H * (img.naturalWidth / img.naturalHeight);
-      frame.style.width = `${w}px`;
-      frame.style.height = `${H}px`; // already set via CSS var, but be explicit
-      frame.style.flex = "0 0 auto";
+      if (img?.naturalWidth && img?.naturalHeight) {
+        const w = H * (img.naturalWidth / img.naturalHeight);
+        frame.style.width = `${w}px`;
+        frame.style.height = `${H}px`;
+      }
     });
 
-    // 3) Build double content for seamless loop (after widths are fixed)
     const items = Array.from(track.children);
     const group1 = document.createElement("div");
     group1.className = "reel-group";
@@ -89,22 +85,18 @@ if (contactButton) {
 
     const group2 = group1.cloneNode(true);
     track.appendChild(group2);
-
     [track, group1, group2].forEach(el => {
       el.style.display = "inline-flex";
       el.style.gap = "var(--gap)";
     });
 
-    // 4) Start animation only now (no hover behavior at all)
     track.style.animation = "reel-marquee var(--duration) linear infinite";
     track.style.animationPlayState = "running";
 
-    // Pause when tab hidden (battery-friendly)
     document.addEventListener("visibilitychange", () => {
       track.style.animationPlayState = document.hidden ? "paused" : "running";
     });
 
-    // Respect reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       track.style.animation = "none";
     }
@@ -112,7 +104,7 @@ if (contactButton) {
     track.dataset.inited = "1";
   }
 
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", initReel);
-  else initReel();
+  document.readyState === "loading"
+    ? document.addEventListener("DOMContentLoaded", initReel)
+    : initReel();
 })();

@@ -276,3 +276,25 @@ footer{background:var(--dark-gray);color:#fff;padding:60px 0 20px;text-align:cen
 @media (hover: none) {
   .submit-btn:hover { transform: none !important; }
 }
+/* ==== Absolute centering of the CTA button on mobile (final) ==== */
+@media (max-width: 768px) {
+  /* the white card can stay as-is; we center the BUTTON itself */
+  .contact .submit-btn {
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;   /* exact center */
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    /* predictable width that never hits the edges */
+    width: clamp(220px, 80vw, 360px) !important;
+    max-width: calc(100% - 40px) !important;  /* 20px safe margin on both sides */
+    margin: 18px 0 !important;                /* vertical spacing only */
+  }
+
+  /* avoid hover-lift nudging on touch */
+  .contact .submit-btn:hover {
+    transform: translateX(-50%) !important;
+  }
+}

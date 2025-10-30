@@ -657,6 +657,22 @@ textarea.form-control {
     left: 100%;
 }
 
+/* ===== Center align 'Naročite se' button on mobile ===== */
+@media (max-width: 768px) {
+  .contact .contact-form {
+    display: flex;
+    justify-content: center;
+  }
+
+  .contact .submit-btn {
+    width: auto;                /* ne čez celotno širino */
+    max-width: 250px;           /* omejitev širine */
+    padding: 15px 35px;
+    font-size: 16px;
+    text-align: center;
+  }
+}
+
 /* Social media links */
 .contact-social {
     display: flex;
@@ -1255,4 +1271,11 @@ footer {
 @media (max-width:768px){
   .reels-gallery{padding:60px 0;}
   .reel-viewport{--reel-height:380px;}
+}
+
+/* Apply hover speed only on hover-capable pointers (desktop) */
+@media (hover: hover) and (pointer: fine) {
+  .reel-viewport:hover .reel-track {
+    animation-duration: calc(var(--duration) * var(--hover-factor) * 1s);
+  }
 }

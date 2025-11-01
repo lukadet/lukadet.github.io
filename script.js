@@ -30,8 +30,7 @@ if (mobileMenuBtn && navLinks) {
 
     if (icon) {
       icon.classList.remove("fa-bars", "fa-times", "fa-xmark");
-      // fa-times for older FA6 beta, fa-xmark for newer — we add 'fa-times'
-      icon.classList.add(opening ? "fa-times" : "fa-bars");
+      icon.classList.add(opening ? "fa-times" : "fa-bars"); // use fa-xmark if your FA supports it
     }
   });
 
@@ -77,7 +76,7 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
   });
 });
 
-// ===== Smooth Reel Gallery (no hover/drag; no server jump) =====
+// ===== Smooth Reel Gallery (stable mobile loop) =====
 (function () {
   async function decodeImg(img) {
     try { if (img.decode) await img.decode(); } catch {}
@@ -119,9 +118,17 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
       el.style.gap = "var(--gap)";
     });
 
-    // Start animation
+    // Start animation (CSS-driven)
     track.style.animation = "reel-marquee var(--duration) linear infinite";
     track.style.animationPlayState = "running";
+
+    // Force an animation restart AFTER DOM reflow to prevent disappearing on iOS
+    requestAnimationFrame(() => {
+      track.style.animation = "none";
+      // reflow
+      void track.offsetWidth;
+      track.style.animation = "reel-marquee var(--duration) linear infinite";
+    });
 
     // Pause when tab hidden
     document.addEventListener("visibilitychange", () => {

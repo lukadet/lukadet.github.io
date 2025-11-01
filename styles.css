@@ -512,6 +512,6 @@ footer{
 
 @media (max-width: 768px) {
   .reel-viewport { 
-    --duration: 28s; /* was 12s */
+    --duration: 40s; /* was 12s */
   }
 }

@@ -217,10 +217,9 @@ footer{background:var(--dark);color:#fff;text-align:center;padding:60px 0 20px;}
 .about-text h2,
 .team .section-title h2,
 .contact .section-title h2,
-.contact-info h3 
-{
+.contact-info h3 {
   font-family: "Bodoni Moda", serif !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
   font-size: clamp(var(--title-min), 5vw, var(--title-max)) !important;
   line-height: 1.05 !important;
   letter-spacing: 0.2px !important;
@@ -228,8 +227,78 @@ footer{background:var(--dark);color:#fff;text-align:center;padding:60px 0 20px;}
   margin-bottom: 20px;
 }
 
-.footer-column h3 {
-  font-family: "Bodoni Moda", serif !important;
-
 /* Override the earlier blue color specifically */
 .section-title h2 { color: var(--dark) !important; }
+
+/* ===============================================================
+   EXTRA MOBILE POLISH — hero side padding & contact optimization
+   =============================================================== */
+@media (max-width: 768px) {
+  /* Hero: več praznega prostora levo/desno za besedilo */
+  .hero-content {
+    padding-inline: clamp(16px, 6vw, 28px);
+    max-width: 680px;
+  }
+  .hero h2 { margin-bottom: 16px; }
+  .hero p  { margin-bottom: 22px; }
+
+  /* Naročanje: kompaktno in prijazno na dotik */
+  .contact { padding: 80px 0; }
+  .contact .container { padding-inline: clamp(16px, 6vw, 24px); }
+
+  .contact-info {
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  }
+
+  .contact-info h3 {
+    font-size: clamp(22px, 4.8vw, 26px);
+    margin: 14px 0 18px;
+  }
+
+  .contact-form {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    margin: 0 0 14px 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .submit-btn {
+    width: 100%;
+    max-width: none;
+    padding: 18px 0;
+    font-size: 20px;
+    border-radius: 56px;
+  }
+
+  .info-item {
+    margin-bottom: 16px;
+    padding: 12px;
+  }
+  .info-icon { margin-right: 14px; }
+
+  /* Telefonska & e-poštna na polno širino */
+  .info-text a[href^="tel"],
+  .info-text a[href^="mailto"] {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 16px;
+    font-size: 16px;
+    box-shadow: 0 8px 18px rgba(52,152,219,0.25);
+    margin-top: 10px;
+  }
+
+  .contact-social {
+    gap: 12px;
+    margin-top: 22px;
+  }
+}
+
+/* Zelo majhni zasloni */
+@media (max-width: 380px) {
+  .contact-info { padding: 22px; }
+  .info-item { padding: 10px; }
+}

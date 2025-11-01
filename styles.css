@@ -504,3 +504,14 @@ footer{
   .contact-info{padding:22px;}
   .info-item{padding:10px;}
 }
+
+/* === Slower reel speed (desktop & mobile) === */
+.reel-viewport { 
+  --duration: 30s;   /* was 18s */
+}
+
+@media (max-width: 768px) {
+  .reel-viewport { 
+    --duration: 22s; /* was 12s */
+  }
+}

@@ -1,5 +1,5 @@
 /* ============================================================
-   Blue Rose – JavaScript (IDs/classes aligned with index.html)
+   Blue Rose – JavaScript (no pre-wait for gallery)
    ============================================================ */
 
 // Header shadow on scroll
@@ -8,7 +8,7 @@ window.addEventListener("scroll", () => {
   header.classList.toggle("header-scrolled", window.scrollY > 50);
 }, { passive: true });
 
-// Mobile menu (cohesive overlay + body lock, no visual changes)
+// Mobile menu
 const mobileMenuBtn = document.getElementById("mobileMenuBtn");
 const navLinks = document.getElementById("navLinks");
 
@@ -34,12 +34,10 @@ if (mobileMenuBtn && navLinks) {
     }
   });
 
-  // Close on link click
   document.querySelectorAll(".nav-links a").forEach(a =>
     a.addEventListener("click", closeMenu)
   );
 
-  // Close on ESC
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeMenu();
   });
@@ -76,36 +74,45 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
   });
 });
 
-// ===== Smooth Reel Gallery (stable mobile loop) =====
+// ===== Reel Gallery: start immediately; progressively enhance =====
 (function () {
-  async function decodeImg(img) {
-    try { if (img.decode) await img.decode(); } catch {}
-    if (img.complete) return;
-    await new Promise(res => img.addEventListener("load", res, { once: true }));
+  function restartAnimation(el) {
+    el.style.animation = "none";
+    void el.offsetWidth; // reflow
+    el.style.animation = "reel-marquee var(--duration) linear infinite";
   }
 
-  async function initReel() {
+  let restartTimer = null;
+  function scheduleRestart(el) {
+    clearTimeout(restartTimer);
+    restartTimer = setTimeout(() => restartAnimation(el), 80);
+  }
+
+  function setFrameSize(frame, H) {
+    const img = frame.querySelector("img");
+    // Fallback width so something is visible immediately
+    let w = Math.round(H * 1.5);
+
+    if (img && img.naturalWidth && img.naturalHeight) {
+      w = Math.max(160, Math.round(H * (img.naturalWidth / img.naturalHeight)));
+    }
+
+    frame.style.width  = w + "px";
+    frame.style.height = H + "px";
+    frame.style.flex   = "0 0 auto";
+  }
+
+  function initReel() {
     const viewport = document.querySelector(".reel-viewport");
     const track = document.getElementById("reelTrack");
     if (!viewport || !track || track.dataset.inited === "1") return;
 
     const H = parseFloat(getComputedStyle(viewport).getPropertyValue("--reel-height")) || 460;
 
-    // Wait images to avoid CLS
-    const imgs = [...track.querySelectorAll("img")];
-    await Promise.all(imgs.map(decodeImg));
+    // Immediately size frames with a sensible fallback so the gallery is visible
+    [...track.children].forEach(frame => setFrameSize(frame, H));
 
-    // Fix widths by natural aspect ratio
-    [...track.children].forEach(frame => {
-      const img = frame.querySelector("img");
-      if (img?.naturalWidth && img?.naturalHeight) {
-        frame.style.width = `${H * (img.naturalWidth / img.naturalHeight)}px`;
-        frame.style.height = `${H}px`;
-        frame.style.flex = "0 0 auto";
-      }
-    });
-
-    // Duplicate content for seamless loop
+    // Duplicate content for seamless loop (no waiting)
     const group1 = document.createElement("div");
     group1.className = "reel-group";
     [...track.children].forEach(el => group1.appendChild(el));
@@ -118,19 +125,20 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
       el.style.gap = "var(--gap)";
     });
 
-    // Start animation (CSS-driven)
+    // Start animation right away
     track.style.animation = "reel-marquee var(--duration) linear infinite";
     track.style.animationPlayState = "running";
 
-    // Force an animation restart AFTER DOM reflow to prevent disappearing on iOS
-    requestAnimationFrame(() => {
-      track.style.animation = "none";
-      // reflow
-      void track.offsetWidth;
-      track.style.animation = "reel-marquee var(--duration) linear infinite";
+    // As images load, refine sizes and gently restart animation
+    track.querySelectorAll("img").forEach(img => {
+      img.addEventListener("load", () => {
+        const frame = img.closest(".reel-frame");
+        if (frame) setFrameSize(frame, H);
+        scheduleRestart(track);
+      }, { once: true });
     });
 
-    // Pause when tab hidden
+    // Pause when tab hidden (battery)
     document.addEventListener("visibilitychange", () => {
       track.style.animationPlayState = document.hidden ? "paused" : "running";
     });

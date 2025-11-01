@@ -1,5 +1,5 @@
 /* ============================================================
-   Blue Rose – JavaScript (no pre-wait for gallery)
+   Blue Rose – JavaScript (gallery speed fully CSS-driven)
    ============================================================ */
 
 // Header shadow on scroll
@@ -30,7 +30,7 @@ if (mobileMenuBtn && navLinks) {
 
     if (icon) {
       icon.classList.remove("fa-bars", "fa-times", "fa-xmark");
-      icon.classList.add(opening ? "fa-times" : "fa-bars"); // use fa-xmark if your FA supports it
+      icon.classList.add(opening ? "fa-times" : "fa-bars");
     }
   });
 
@@ -74,28 +74,21 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
   });
 });
 
-// ===== Reel Gallery: start immediately; progressively enhance =====
+// ===== Reel Gallery: visible immediately + CSS speed =====
 (function () {
   function restartAnimation(el) {
     el.style.animation = "none";
     void el.offsetWidth; // reflow
-    el.style.animation = "reel-marquee var(--duration) linear infinite";
-  }
-
-  let restartTimer = null;
-  function scheduleRestart(el) {
-    clearTimeout(restartTimer);
-    restartTimer = setTimeout(() => restartAnimation(el), 80);
+    // Re-read current --duration from CSS instead of forcing one
+    const dur = getComputedStyle(el).getPropertyValue("--duration").trim() || "30s";
+    el.style.animation = `reel-marquee ${dur} linear infinite`;
   }
 
   function setFrameSize(frame, H) {
     const img = frame.querySelector("img");
-    // Fallback width so something is visible immediately
     let w = Math.round(H * 1.5);
-
-    if (img && img.naturalWidth && img.naturalHeight) {
+    if (img && img.naturalWidth && img.naturalHeight)
       w = Math.max(160, Math.round(H * (img.naturalWidth / img.naturalHeight)));
-    }
 
     frame.style.width  = w + "px";
     frame.style.height = H + "px";
@@ -109,15 +102,14 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
 
     const H = parseFloat(getComputedStyle(viewport).getPropertyValue("--reel-height")) || 460;
 
-    // Immediately size frames with a sensible fallback so the gallery is visible
+    // Immediate visible sizing
     [...track.children].forEach(frame => setFrameSize(frame, H));
 
-    // Duplicate content for seamless loop (no waiting)
+    // Duplicate content
     const group1 = document.createElement("div");
     group1.className = "reel-group";
     [...track.children].forEach(el => group1.appendChild(el));
     const group2 = group1.cloneNode(true);
-
     track.innerHTML = "";
     track.append(group1, group2);
     [group1, group2, track].forEach(el => {
@@ -125,20 +117,18 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
       el.style.gap = "var(--gap)";
     });
 
-    // Start animation right away
-    track.style.animation = "reel-marquee var(--duration) linear infinite";
-    track.style.animationPlayState = "running";
+    // Start animation using CSS variable
+    restartAnimation(track);
 
-    // As images load, refine sizes and gently restart animation
+    // Refine sizing as images load
     track.querySelectorAll("img").forEach(img => {
       img.addEventListener("load", () => {
         const frame = img.closest(".reel-frame");
         if (frame) setFrameSize(frame, H);
-        scheduleRestart(track);
-      }, { once: true });
+        restartAnimation(track);
+      });
     });
 
-    // Pause when tab hidden (battery)
     document.addEventListener("visibilitychange", () => {
       track.style.animationPlayState = document.hidden ? "paused" : "running";
     });

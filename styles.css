@@ -507,11 +507,11 @@ footer{
 
 /* === Slower reel speed (desktop & mobile) === */
 .reel-viewport { 
-  --duration: 30s;   /* was 18s */
+  --duration: 40s;   /* was 18s */
 }
 
 @media (max-width: 768px) {
   .reel-viewport { 
-    --duration: 22s; /* was 12s */
+    --duration: 28s; /* was 12s */
   }
 }

@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="stylesheet" href="styles.css?v=21" />
 </head>
 <body>
   <!-- Header -->
@@ -23,7 +23,7 @@
           <img src="images/blurose.png" alt="Blue Rose Logo" width="40" height="40" decoding="async">
           <h1>Blue Rose</h1>
         </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Odpri meni">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Odpri meni" aria-expanded="false">
           <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
         <ul class="nav-links" id="navLinks">
@@ -150,7 +150,6 @@
 
       <div class="reel-viewport" data-fit="contain" style="--reel-height: 460px;">
         <ul class="reel-track" id="reelTrack" aria-label="Drseča galerija">
-          <!-- poljuben format: 1:1, 4:3, 3:2, 16:9, panorama … -->
           <li class="reel-frame"><img src="images/1.jpeg" alt="Galerija 1" loading="eager" decoding="async"></li>
           <li class="reel-frame"><img src="images/2.jpeg" alt="Galerija 2" loading="lazy" decoding="async"></li>
           <li class="reel-frame"><img src="images/3.jpeg" alt="Galerija 3" loading="lazy" decoding="async"></li>
@@ -199,10 +198,34 @@
           </div>
           <br>
           <h3>Kontaktni podatki</h3>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-map-marker-alt"></i></div><div class="info-text"><h4>Lokacija</h4><p>Dolenjska cesta 11, 1000 Ljubljana</p></div></div>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-phone-alt"></i></div><div class="info-text"><h4>Telefon</h4><p><a href="tel:+38640140697">+386 40 140 697</a></p></div></div>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-envelope"></i></div><div class="info-text"><h4>Email</h4><p><a href="mailto:BlueRoseM15@gmail.com">BlueRoseM15@gmail.com</a></p></div></div>
-          <div class="info-item"><div class="info-icon"><i class="fas fa-clock"></i></div><div class="info-text"><h4>Delovni čas</h4><p>Po dogovoru</p></div></div>
+          <div class="info-item">
+            <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="info-text">
+              <h4>Lokacija</h4>
+              <p>Dolenjska cesta 11, 1000 Ljubljana</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+            <div class="info-text">
+              <h4>Telefon</h4>
+              <p><a href="tel:+38640140697">+386 40 140 697</a></p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon"><i class="fas fa-envelope"></i></div>
+            <div class="info-text">
+              <h4>Email</h4>
+              <p><a href="mailto:BlueRoseM15@gmail.com">BlueRoseM15@gmail.com</a></p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon"><i class="fas fa-clock"></i></div>
+            <div class="info-text">
+              <h4>Delovni čas</h4>
+              <p>Po dogovoru</p>
+            </div>
+          </div>
 
           <div class="contact-social" aria-label="Družbena omrežja">
             <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
@@ -236,6 +259,6 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="script.js?v=20" defer></script>
+  <script src="script.js?v=21" defer></script>
 </body>
 </html>

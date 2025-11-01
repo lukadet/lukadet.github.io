@@ -8,14 +8,42 @@ window.addEventListener("scroll", () => {
   header.classList.toggle("header-scrolled", window.scrollY > 50);
 }, { passive: true });
 
-// Mobile menu
+// Mobile menu (cohesive overlay + body lock, no visual changes)
 const mobileMenuBtn = document.getElementById("mobileMenuBtn");
 const navLinks = document.getElementById("navLinks");
+
 if (mobileMenuBtn && navLinks) {
-  mobileMenuBtn.addEventListener("click", () => navLinks.classList.toggle("active"));
-  document.querySelectorAll(".nav-links a").forEach(link =>
-    link.addEventListener("click", () => navLinks.classList.remove("active"))
+  const icon = mobileMenuBtn.querySelector("i");
+
+  function closeMenu() {
+    navLinks.classList.remove("active");
+    document.body.classList.remove("menu-open");
+    mobileMenuBtn.setAttribute("aria-expanded", "false");
+    if (icon) { icon.classList.remove("fa-times", "fa-xmark"); icon.classList.add("fa-bars"); }
+  }
+
+  mobileMenuBtn.addEventListener("click", () => {
+    const opening = !navLinks.classList.contains("active");
+    navLinks.classList.toggle("active", opening);
+    document.body.classList.toggle("menu-open", opening);
+    mobileMenuBtn.setAttribute("aria-expanded", opening ? "true" : "false");
+
+    if (icon) {
+      icon.classList.remove("fa-bars", "fa-times", "fa-xmark");
+      // fa-times for older FA6 beta, fa-xmark for newer — we add 'fa-times'
+      icon.classList.add(opening ? "fa-times" : "fa-bars");
+    }
+  });
+
+  // Close on link click
+  document.querySelectorAll(".nav-links a").forEach(a =>
+    a.addEventListener("click", closeMenu)
   );
+
+  // Close on ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
 }
 
 // Reveal on scroll
@@ -64,7 +92,7 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
 
     const H = parseFloat(getComputedStyle(viewport).getPropertyValue("--reel-height")) || 460;
 
-    // Wait images to avoid CLS jump on server
+    // Wait images to avoid CLS
     const imgs = [...track.querySelectorAll("img")];
     await Promise.all(imgs.map(decodeImg));
 
@@ -91,11 +119,11 @@ document.querySelectorAll(".submit-btn").forEach(btn => {
       el.style.gap = "var(--gap)";
     });
 
-    // Start animation (no hover behavior anywhere)
+    // Start animation
     track.style.animation = "reel-marquee var(--duration) linear infinite";
     track.style.animationPlayState = "running";
 
-    // Pause when tab hidden (battery)
+    // Pause when tab hidden
     document.addEventListener("visibilitychange", () => {
       track.style.animationPlayState = document.hidden ? "paused" : "running";
     });

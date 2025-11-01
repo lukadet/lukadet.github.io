@@ -108,9 +108,25 @@ nav{
   display:inline-block;
   border:2px solid var(--primary-color);
 }
-.btn:hover{background:transparent;color:var(--primary-color);transform:translateY(-3px);}
-.btn-outline{background:transparent;color:var(--primary-color);margin-left:10px;}
-.btn-outline:hover{background:var(--primary-color);color:#fff;}
+.btn,
+.btn-outline {
+  background: var(--primary-color);
+  color: #fff;
+  border: 2px solid var(--primary-color);
+  border-radius: 50px;
+  padding: 12px 30px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all .3s ease;
+  font-weight: 600;
+}
+
+.btn:hover,
+.btn-outline:hover {
+  background: #fff;
+  color: var(--primary-color);
+  transform: translateY(-3px);
+}
 
 /* ================================
    SECTIONS: ABOUT / SERVICES / TEAM
@@ -472,3 +488,4 @@ footer{
   .contact-info{padding:22px;}
   .info-item{padding:10px;}
 }
+

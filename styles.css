@@ -491,3 +491,46 @@ footer{
   .info-item{padding:10px;}
 }
 
+/* === FIX: smoother reel/gallery animation on mobile === */
+.reel-track {
+  display: inline-flex;
+  gap: var(--gap);
+  will-change: transform;
+  animation: reel-marquee var(--duration) linear infinite;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+}
+
+@media (max-width: 768px) {
+  /* Ensure gallery width doesn’t get recalculated mid-animation */
+  .reel-viewport {
+    overflow: hidden;
+    contain: paint layout style;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .reel-track {
+    animation-duration: calc(var(--duration) * 1.5); /* slow slightly for smoother feel */
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Prevent layout shifts while scrolling */
+  .reel-frame img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Hard fix for iOS Safari "jump" bug */
+@supports (-webkit-touch-callout: none) {
+  .reel-track {
+    animation-fill-mode: forwards;
+    transform: translate3d(0, 0, 0);
+  }
+}
